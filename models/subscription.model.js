@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 
-const subsciptionSChema = new mongoose.Schema(
+const subscriptionSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "subsciption Name is required"],
+      required: [true, "Subscription Name is required"],
       trim: true,
       minLength: 2,
       maxLength: 100,
     },
     price: {
       type: String,
-      required: [true, "Subsciption price is required"],
+      required: [true, "Subscription price is required"],
       minLength: [0, "Price must be greater than 0"],
     },
     currency: {
@@ -70,7 +70,7 @@ const subsciptionSChema = new mongoose.Schema(
 );
 
 //Auto calculate renewal date of missing
-subsciptionSchema.pre("save", function (next) {
+subscriptionSchema.pre("save", function (next) {
   if (!this.renewalDate) {
     const renewalPeriod = {
       daily: 1,
@@ -90,10 +90,8 @@ subsciptionSchema.pre("save", function (next) {
   if (this.renewalDate < new Date()) {
     this.status = 'expired';
   }
-
-  next();
 });
 
-const Subsciption = mongoose.model("subsciption", subsciptionSChema);
+const Subscription = mongoose.model("Subscription", subscriptionSchema);
 
-export default Subsciption;
+export default Subscription;
